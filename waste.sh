@@ -27,6 +27,9 @@ fi
 folder="$basket_root/$(date +"%Y-%m-%d-%H-%M-%S")"
 mkdir -p "$folder"
 
+# Create info file
+touch "$folder/.waste"
+
 # Process each argument
 for item in "$@"; do
     if [ "$item" = "-l" ]; then
@@ -40,8 +43,10 @@ for item in "$@"; do
 
     if mv "$item" "$folder/" 2>/dev/null; then
         echo "🗑️  Wasted: '$item'"
+        echo "$(realpath $item)" >> "$folder/.waste"
     elif sudo mv "$item" "$folder/"; then
         echo "🗑️  Wasted (with sudo): '$item'"
+        echo "$(realpath $item)" >> "$folder/.waste"
     else
         echo "❌ Failed to move '$item'"
     fi
