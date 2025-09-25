@@ -25,7 +25,6 @@ fi
 
 # Create a timestamped subdirectory
 folder="$basket_root/$(date +"%Y-%m-%d-%H-%M-%S")"
-mkdir -p "$folder"
 
 # Create info file
 touch "$folder/.waste"
@@ -40,6 +39,8 @@ for item in "$@"; do
         echo "⚠️  '$item' does not exist, skipping."
         continue
     fi
+
+    mkdir -p "$folder"
 
     if mv "$item" "$folder/" 2>/dev/null; then
         echo "🗑️  Wasted: '$item'"
