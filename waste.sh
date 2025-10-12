@@ -26,9 +26,6 @@ fi
 # Create a timestamped subdirectory
 folder="$basket_root/$(date +"%Y-%m-%d-%H-%M-%S")"
 
-# Create info file
-touch "$folder/.waste"
-
 # Process each argument
 for item in "$@"; do
     if [ "$item" = "-l" ]; then
