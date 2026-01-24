@@ -56,7 +56,7 @@ for arg in "$@"; do
     fi
 
     if [ "$arg" = "--update" ]; then
-        waste $HOME/.local/bin/waste
+        rm $HOME/.local/bin/waste
 
         curl -sSL https://raw.githubusercontent.com/leonickl/wastebasket/main/waste.sh \
             -o $HOME/.local/bin/waste
@@ -72,9 +72,6 @@ done
 # If no arguments, show usage
 if [ "$#" -eq 0 ]; then
     echo """
-    helloooo
-
-
     Usage:
     =====
 
