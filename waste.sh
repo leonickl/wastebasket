@@ -19,7 +19,19 @@ done
 
 # If no arguments, show usage
 if [ "$#" -eq 0 ]; then
-    echo "Usage: $(basename "$0") [-l] file1 [file2 ...]"
+    echo """
+    Usage:
+    =====
+
+    '$(basename "$0") [OPTION]' or '$(basename "$0") [FILE]...'
+
+
+    Available Options:
+    =================
+
+    -l | --list: Lists the current content of the wastebasket using the ls command.
+                 If lsd is installed, a tree is printed.
+    """
     exit 1
 fi
 
