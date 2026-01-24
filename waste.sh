@@ -84,6 +84,8 @@ if [ "$#" -eq 0 ]; then
     -u | --undo:          Restore recently deleted files.
     -p | --prune [days]:  Delete entries older than a specified number of days (30 by default).
     --update:             Update the program.
+
+    (c) Leo Nickl 2026
     """
 
     exit 1
