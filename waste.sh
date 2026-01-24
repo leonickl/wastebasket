@@ -7,7 +7,7 @@ basket_root="$HOME/.wastebasket"
 
 # If "-l" is provided, list contents and exit
 for arg in "$@"; do
-    if [ "$arg" = "-l" ]; then
+    if [ "$arg" = "-l" ] || [ "$arg" = "--list" ]; then
         if command -v lsd >/dev/null 2>&1; then
             lsd --tree --depth=2 "$basket_root"
         else
