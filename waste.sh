@@ -39,6 +39,21 @@ for arg in "$@"; do
 
         exit 0
     fi
+
+    if [ "$arg" = "-p" ] || [ "$arg" = "--prune" ]; then
+        n=${2:-30}
+
+        n_days_ago=$(date -d "$n days ago" +"%Y%m%d")
+
+        old_files=$(ls $basket_root | awk -F- -v cutoff="$n_days_ago" '$1$2$3 < cutoff {print $1"-"$2"-"$3}' | sort -u)
+
+        for file in $old_files; do
+            # try to delete and rm as sudo otherwise
+            rm -rf $basket_root/$file* 2>/dev/null || sudo rm -rf $basket_root/$file*
+        done
+
+        exit 0
+    fi
 done
 
 # If no arguments, show usage
@@ -56,6 +71,7 @@ if [ "$#" -eq 0 ]; then
     -l | --list: List the current content of the wastebasket using the ls command.
                  If lsd is installed, a tree is printed.
     -u | --undo: Restore recently deleted files.
+    -p | --prune [days]: Delete entries older than a specified number of days (30 by default).
     """
 
     exit 1
