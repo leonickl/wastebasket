@@ -35,14 +35,18 @@ if [ "$#" -eq 0 ]; then
     exit 1
 fi
 
-# Create a timestamped subdirectory
-folder="$basket_root/$(date +"%Y-%m-%d-%H-%M-%S")"
+timestamp="$(date +"%Y-%m-%d-%H-%M-%S")"
 
-# Process each argument
+# Process each file
 for item in "$@"; do
-    if [ "$item" = "-l" ]; then
-        continue
-    fi
+    folder="$basket_root/$timestamp"
+
+    # Add counter if the target directory exists
+    counter=1
+    while [ -d "$folder" ]; do
+        folder="$basket_root/${timestamp}_$counter"
+        ((counter++))
+    done
 
     if [ ! -e "$item" ]; then
         echo "⚠️  '$item' does not exist, skipping."
@@ -51,12 +55,13 @@ for item in "$@"; do
 
     mkdir -p "$folder"
 
-    if mv "$item" "$folder/" 2>/dev/null; then
+    # Try moving regularly and then with sudo
+    if mv "$item" "$folder/file" 2>/dev/null; then
         echo "🗑️  Wasted: '$item'"
-        echo "$(realpath $item)" >> "$folder/.waste"
-    elif sudo mv "$item" "$folder/"; then
-        echo "🗑️  Wasted (with sudo): '$item'"
-        echo "$(realpath $item)" >> "$folder/.waste"
+        echo "$(realpath $item)" >> "$folder/info"
+    elif sudo mv "$item" "$folder/file"; then
+        echo "🗑️  Wasted (sudo): '$item'"
+        echo "$(realpath $item)" >> "$folder/info"
     else
         echo "❌ Failed to move '$item'"
     fi
