@@ -56,8 +56,9 @@ for arg in "$@"; do
     fi
 
     if [ "$arg" = "--update" ]; then
-        curl -sSL https://github.com/leonickl/wastebasket/raw/refs/heads/main/waste.sh \
+        curl -sSL https://raw.githubusercontent.com/leonickl/wastebasket/main/waste.sh \
             -o $HOME/.local/bin/waste
+
         chmod +x $HOME/.local/bin/waste
 
         echo "Updated program"
