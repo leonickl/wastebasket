@@ -8,11 +8,13 @@ basket_root="$HOME/.wastebasket"
 # If "-l" is provided, list contents and exit
 for arg in "$@"; do
     if [ "$arg" = "-l" ] || [ "$arg" = "--list" ]; then
-        if command -v lsd >/dev/null 2>&1; then
-            lsd --tree --depth=2 "$basket_root"
-        else
-            ls -R "$basket_root"
-        fi
+        for dir in $basket_root/*; do
+            if [ -f $dir/info ]; then
+                echo "$(basename $dir): $(cat $dir/info)"
+            else
+                echo "$(basename $dir)"
+            fi
+        done
 
         exit 0
     fi
@@ -86,8 +88,7 @@ if [ "$#" -eq 0 ]; then
     Available Options:
     =================
 
-    -l | --list:          List the current content of the wastebasket using the ls command.
-                          If lsd is installed, a tree is printed.
+    -l | --list:          List the current content of the wastebasket.
     -u | --undo:          Restore recently deleted files.
     -p | --prune [days]:  Delete entries older than a specified number of days (30 by default).
     --update:             Updates the program.
