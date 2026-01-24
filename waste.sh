@@ -56,17 +56,16 @@ for arg in "$@"; do
     fi
 
     if [ "$arg" = "--update" ]; then
+        rm $HOME/.local/bin/waste 2>/dev/null
 
-        echo """
-            rm \$HOME/.local/bin/waste
+        curl -sSL \
+            -z "$HOME/.local/bin/waste" \
+            https://raw.githubusercontent.com/leonickl/wastebasket/main/waste.sh \\
+            -o $HOME/.local/bin/waste
 
-            curl -sSL https://raw.githubusercontent.com/leonickl/wastebasket/main/waste.sh \\
-                -o \$HOME/.local/bin/waste
+        chmod +x $HOME/.local/bin/waste
 
-            chmod +x \$HOME/.local/bin/waste
-
-            echo "Updated program"
-        """
+        echo "Updated program"
 
         exit 0
     fi
@@ -75,8 +74,6 @@ done
 # If no arguments, show usage
 if [ "$#" -eq 0 ]; then
     echo """
-    hahahah
-
     Usage:
     =====
 
@@ -90,12 +87,7 @@ if [ "$#" -eq 0 ]; then
                           If lsd is installed, a tree is printed.
     -u | --undo:          Restore recently deleted files.
     -p | --prune [days]:  Delete entries older than a specified number of days (30 by default).
-    --update:             Returns an update script that must be piped to bash.
-
-    Update:
-    ======
-
-    'waste --update | bash'
+    --update:             Updates the program.
 
     (c) Leo Nickl 2026
     """
