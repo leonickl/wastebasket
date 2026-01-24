@@ -63,8 +63,7 @@ for arg in "$@"; do
         fi
 
         curl -sSL \
-            -z "$HOME/.local/bin/waste" \
-            https://raw.githubusercontent.com/leonickl/wastebasket/main/waste.sh \
+            https://raw.githubusercontent.com/leonickl/wastebasket/main/waste.sh?blabla=$(date +"%Y-%m-%d-%H-%M-%S") \
             -o $HOME/.local/bin/waste
 
         chmod +x $HOME/.local/bin/waste
