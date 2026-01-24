@@ -56,6 +56,8 @@ for arg in "$@"; do
     fi
 
     if [ "$arg" = "--update" ]; then
+        waste $HOME/.local/bin/waste
+
         curl -sSL https://raw.githubusercontent.com/leonickl/wastebasket/main/waste.sh \
             -o $HOME/.local/bin/waste
 
