@@ -54,6 +54,16 @@ for arg in "$@"; do
 
         exit 0
     fi
+
+    if [ "$arg" = "--update" ]; then
+        mkdir -p ~/.local/bin
+        curl -sSL https://github.com/leonickl/wastebasket/raw/refs/heads/main/waste.sh -o ~/.local/bin/waste
+        chmod +x ~/.local/bin/waste
+
+        echo "Updated program"
+
+        exit 0
+    fi
 done
 
 # If no arguments, show usage
@@ -68,10 +78,11 @@ if [ "$#" -eq 0 ]; then
     Available Options:
     =================
 
-    -l | --list: List the current content of the wastebasket using the ls command.
-                 If lsd is installed, a tree is printed.
-    -u | --undo: Restore recently deleted files.
-    -p | --prune [days]: Delete entries older than a specified number of days (30 by default).
+    -l | --list:          List the current content of the wastebasket using the ls command.
+                          If lsd is installed, a tree is printed.
+    -u | --undo:          Restore recently deleted files.
+    -p | --prune [days]:  Delete entries older than a specified number of days (30 by default).
+    --update:             Update the program.
     """
 
     exit 1
