@@ -56,9 +56,10 @@ for arg in "$@"; do
     fi
 
     if [ "$arg" = "--update" ]; then
-        mkdir -p ~/.local/bin
-        curl -sSL https://github.com/leonickl/wastebasket/raw/refs/heads/main/waste.sh -o ~/.local/bin/waste
-        chmod +x ~/.local/bin/waste
+        mkdir -p $HOME/.local/bin
+        waste $HOME/.local/bin/waste >/dev/null
+        curl -sSL https://github.com/leonickl/wastebasket/raw/refs/heads/main/waste.sh -o $HOME/.local/bin/waste
+        chmod +x $HOME/.local/bin/waste
 
         echo "Updated program"
 
