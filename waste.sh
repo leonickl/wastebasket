@@ -56,11 +56,15 @@ for arg in "$@"; do
     fi
 
     if [ "$arg" = "--update" ]; then
-        rm $HOME/.local/bin/waste 2>/dev/null
+        mkdir -p $HOME/.local/bin
+
+        if [ -f  $HOME/.local/bin/waste ]; then
+            rm $HOME/.local/bin/waste
+        fi
 
         curl -sSL \
             -z "$HOME/.local/bin/waste" \
-            https://raw.githubusercontent.com/leonickl/wastebasket/main/waste.sh \\
+            https://raw.githubusercontent.com/leonickl/wastebasket/main/waste.sh \
             -o $HOME/.local/bin/waste
 
         chmod +x $HOME/.local/bin/waste
