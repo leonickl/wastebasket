@@ -9,12 +9,12 @@
 - Works with multiple files at once.
 - Falls back to `sudo` if necessary to move protected files.
 
-## Installation
+## Installation and Update
 
 Run this command in your terminal to download and set up the script in ~/.local/bin (create the folder if it doesn’t exist):
 
 ```bash
-mkdir -p ~/.local/bin && curl -sSL https://github.com/leonickl/wastebasket/raw/refs/heads/main/waste.sh -o ~/.local/bin/waste && chmod +x ~/.local/bin/waste
+mkdir -p ~/.local/bin && curl -sSL https://raw.githubusercontent.com/leonickl/wastebasket/main/waste.sh -o ~/.local/bin/waste && chmod +x ~/.local/bin/waste
 ```
 
 (Optional) Make your shell safer by aliasing rm to just echo commands. This prevents accidental deletion and encourages using waste.
@@ -36,7 +36,19 @@ waste file1 file2 ...
 List wastebasket contents:
 
 ```bash
-waste -l
+waste --list
+```
+
+Undo the last deletion:
+
+```bash
+waste --undo
+```
+
+Remove all items older than 20 days form the wastebasket:
+
+```bash
+waste --prune
 ```
 
 ## Notes
