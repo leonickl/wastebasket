@@ -9,7 +9,7 @@ basket_root="$HOME/.wastebasket"
 for arg in "$@"; do
     if [ "$arg" = "-l" ] || [ "$arg" = "--list" ]; then
         for dir in $basket_root/*; do
-            if [ -f $dir/info ]; then
+            if [ -e $dir/info ]; then
                 echo "$(basename $dir): $(cat $dir/info)"
             else
                 echo "$(basename $dir)"
@@ -25,7 +25,7 @@ for arg in "$@"; do
 
         # loop over all files that were deleted in this batch
         for file in $basket_root/$latest*; do
-            if [ -f $file/file ] && [ -f $file/info ]; then
+            if [ -e $file/file ] && [ -f $file/info ]; then
                 source=$(cat $file/info)
 
                 mv $file/file $source
@@ -59,7 +59,7 @@ for arg in "$@"; do
     fi
 
     if [ "$arg" = "--update" ]; then
-        mkdir -p $HOME/.local/bin
+        mkdir -p $HOME/.local/bin   
 
         if [ -f  $HOME/.local/bin/waste ]; then
             rm $HOME/.local/bin/waste
