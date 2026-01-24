@@ -56,14 +56,17 @@ for arg in "$@"; do
     fi
 
     if [ "$arg" = "--update" ]; then
-        rm $HOME/.local/bin/waste
 
-        curl -sSL https://raw.githubusercontent.com/leonickl/wastebasket/main/waste.sh \
-            -o $HOME/.local/bin/waste
+        echo """
+            rm \$HOME/.local/bin/waste
 
-        chmod +x $HOME/.local/bin/waste
+            curl -sSL https://raw.githubusercontent.com/leonickl/wastebasket/main/waste.sh \\
+                -o \$HOME/.local/bin/waste
 
-        echo "Updated program"
+            chmod +x \$HOME/.local/bin/waste
+
+            echo "Updated program"
+        """
 
         exit 0
     fi
@@ -85,7 +88,12 @@ if [ "$#" -eq 0 ]; then
                           If lsd is installed, a tree is printed.
     -u | --undo:          Restore recently deleted files.
     -p | --prune [days]:  Delete entries older than a specified number of days (30 by default).
-    --update:             Update the program.
+    --update:             Returns an update script that must be piped to bash.
+
+    Update:
+    ======
+
+    'waste --update | bash'
 
     (c) Leo Nickl 2026
     """
