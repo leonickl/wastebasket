@@ -28,7 +28,8 @@ for arg in "$@"; do
             if [ -f $file/file ] && [ -f $file/info ]; then
                 source=$(cat $file/info)
 
-                mv "$file/file" $source
+                mv $file/file $source
+                rm -r $file
 
                 echo "Restored: '$source'"
             else
