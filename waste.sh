@@ -13,6 +13,30 @@ for arg in "$@"; do
         else
             ls -R "$basket_root"
         fi
+
+        exit 0
+    fi
+
+    if [ "$arg" = "-u" ] || [ "$arg" = "--undo" ]; then
+        # read latest entry
+        latest=$(tail -n 1 "$basket_root/.latest")
+
+        # loop over all files that were deleted in this batch
+        for file in $basket_root/$latest*; do
+            if [ -f $file/file ] && [ -f $file/info ]; then
+                source=$(cat $file/info)
+
+                mv "$file/file" $source
+
+                echo "Restored: '$source'"
+            else
+                echo "Deleted file or corresponding info does not exist."
+            fi
+        done
+
+        # remove latest entry
+        sed -i '$ d' "$basket_root/.latest"
+
         exit 0
     fi
 done
@@ -29,9 +53,11 @@ if [ "$#" -eq 0 ]; then
     Available Options:
     =================
 
-    -l | --list: Lists the current content of the wastebasket using the ls command.
+    -l | --list: List the current content of the wastebasket using the ls command.
                  If lsd is installed, a tree is printed.
+    -u | --undo: Restore recently deleted files.
     """
+
     exit 1
 fi
 
@@ -66,3 +92,5 @@ for item in "$@"; do
         echo "❌ Failed to move '$item'"
     fi
 done
+
+echo $timestamp >> "$basket_root/.latest"
