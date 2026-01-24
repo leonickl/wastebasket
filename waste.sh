@@ -77,6 +77,8 @@ done
 # If no arguments, show usage
 if [ "$#" -eq 0 ]; then
     echo """
+    hahah
+
     Usage:
     =====
 
