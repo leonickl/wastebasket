@@ -75,6 +75,12 @@ for arg in "$@"; do
 
         exit 0
     fi
+
+    if [ "$arg" = "--self" ]; then
+        rm $HOME/.local/bin/waste
+        echo "waste wasted waste"
+        exit 0
+    fi
 done
 
 # If no arguments, show usage
@@ -93,6 +99,7 @@ if [ "$#" -eq 0 ]; then
     -u | --undo:          Restore recently deleted files.
     -p | --prune [days]:  Delete entries older than a specified number of days (30 by default).
     --update:             Updates the program.
+    --self:               Wastes the program executable.
 
     (c) Leo Nickl 2026
     """
