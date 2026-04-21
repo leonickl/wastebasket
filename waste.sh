@@ -3,6 +3,12 @@
 
 set -euo pipefail
 
+yes_no () {
+    question=${1:-"Yes or no?"}
+    read -p "$question [Y/n] " reply
+    [[ $reply == "" ]] || [[ $reply == "Y" ]] || [[ $reply == "y" ]]
+}
+
 basket_root="$HOME/.wastebasket"
 
 # If "-l" is provided, list contents and exit
@@ -81,6 +87,47 @@ for arg in "$@"; do
         echo "waste wasted waste"
         exit 0
     fi
+
+    if [ "$arg" = "--rm" ]; then
+        shift
+
+        for item in "$@"; do
+            if [ ! -e "$item" ]; then
+                echo "⚠️  '$item' does not exist, skipping."
+                continue
+            fi
+
+            if ! yes_no "Want to delete '$item'?"; then
+                echo "⚠️  Skipping '$item'."
+                continue
+            fi
+
+            # directory
+            if [ -d "$item" ]; then
+                if ! yes_no "Want to delete '$item' recursively?"; then
+	                echo "⚠️  Skipped deleting directory '$item'"
+	            fi
+
+                if ! rm -r "$item" 2>/dev/null; then
+                    echo "❌ Failed deleting '$item' recursively. Maybe try with sudo manually."
+                fi
+
+                echo "Permanently deleted '$item' recursively"
+                continue
+	        fi
+
+            # regular file
+            if rm "$item" 2>/dev/null; then
+                echo "Permanently deleted '$item'"
+            elif sudo rm "$item" 2>/dev/null; then
+                echo "Permanently deleted '$item'"
+            else
+                echo "❌ Failed to move '$item'"
+            fi
+        done
+
+        exit 0
+    fi
 done
 
 # If no arguments, show usage
@@ -99,6 +146,7 @@ if [ "$#" -eq 0 ]; then
     -u | --undo:          Restore recently deleted files.
     -p | --prune [days]:  Delete entries older than a specified number of days (30 by default).
     --update:             Updates the program.
+    --rm:                 Permanently deletes the files. Combining sudo and "-r" is not supported.
     --self:               Wastes the program executable.
 
     (c) Leo Nickl 2026
